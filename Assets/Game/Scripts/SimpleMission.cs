@@ -3,9 +3,9 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-namespace Game.Scripts.Mission_system
+namespace Game.Scripts
 {
-    public class SimpleMission : MonoBehaviour, IMission, IDisposable
+    public class SimpleMission : MonoBehaviour, IMission
     {
         public event Action OnStarted;
         public event Action OnFinished;
@@ -14,27 +14,16 @@ namespace Game.Scripts.Mission_system
         [SerializeField] private float missionDuration = 3f;
     
         private CancellationTokenSource _cancellationTokenSource;
-    
-        private void Log(string message)
-        {
-            Debug.Log($"[{gameObject.name}] {message}");
-        }
 
         public void Begin()
         {
-            if (_cancellationTokenSource != null)
-            {
-                Log("is already running");
-                return;
-            }
-
             _cancellationTokenSource = new CancellationTokenSource();
             StartAsync(_cancellationTokenSource.Token).Forget();
         }
     
         private async UniTaskVoid StartAsync(CancellationToken token)
         {
-            Log("started");
+            Debug.Log($"[{gameObject.name}] started");
             OnStarted?.Invoke();
         
             try
@@ -44,23 +33,18 @@ namespace Game.Scripts.Mission_system
             }
             catch (OperationCanceledException)
             {
-                Log("canceled");
+                Debug.Log($"[{gameObject.name}] canceled");
             }
         }
 
         private void FinishMission()
         {
-            Log("finished");
+            Debug.Log($"[{gameObject.name}] finished");
             OnFinished?.Invoke();
             Destroy(gameObject);
         }
     
         private void OnDestroy()
-        {
-            Dispose();
-        }
-
-        public void Dispose()
         {
             if (_cancellationTokenSource == null) return;
         

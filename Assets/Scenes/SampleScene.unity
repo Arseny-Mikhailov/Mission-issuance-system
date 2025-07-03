@@ -243,7 +243,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ed2937f40f24466be18594914f21848, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  missionChainsRoots:
+  missionChains:
   - {fileID: 11400000, guid: 5a2c76846881a4746be54013f5c22134, type: 2}
   - {fileID: 11400000, guid: b6f8fcebafe877c4c9a40e6471a9596a, type: 2}
 --- !u!4 &1902766727

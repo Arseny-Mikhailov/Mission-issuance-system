@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4120fefe4c524e6ab0f5775b9dfa14fa, type: 3}
-  m_Name: Mission E
+  m_Name: Mission B
   m_EditorClassIdentifier: 
-  missionName: Mission E
-  missionPrefab: {fileID: 4540357824847698436, guid: c04333f0efa7f134bb11c9feabe8b2e1, type: 3}
-  startDelay: 0
-  nextMission: {fileID: 0}
+  <MissionName>k__BackingField: Mission B
+  <MissionPrefab>k__BackingField: {fileID: 4540357824847698436, guid: c04333f0efa7f134bb11c9feabe8b2e1, type: 3}
+  <StartDelay>k__BackingField: 5
+  <NextMission>k__BackingField: {fileID: 11400000, guid: de99193a1126c794ab24a8afe1e5662b, type: 2}

@@ -2,17 +2,17 @@ using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-namespace Game.Scripts.Mission_system
+namespace Game.Scripts
 {
     public class MissionSystem : MonoBehaviour
     {
-        [SerializeField] private List<MissionData> missionChainsRoots;
+        [SerializeField] private List<MissionData> missionChains;
 
         private readonly List<Timer> _activeTimers = new();
         
         private void Start()
         {
-            foreach (var firstMission in missionChainsRoots)
+            foreach (var firstMission in missionChains)
             {
                 StartMissionChain(firstMission);
             }
@@ -22,50 +22,50 @@ namespace Game.Scripts.Mission_system
         {
             if (missionData == null) return;
             
-            if (missionData.startDelay <= 0)
+            if (missionData.StartDelay <= 0)
             {
                 StartMission(missionData);
             }
             else
             {
-                var delayMs = (int)(missionData.startDelay * 1000);
+                //todo: converting to milliseconds for timer
+                var delayMs = (int)(missionData.StartDelay * 1000);
                 var timer = new Timer();
                 
                 _activeTimers.Add(timer);
 
-                void OnComplete()
+                timer.StartAsync(delayMs, OnFinished).Forget(); 
+                
+                void OnFinished()
                 {
                     _activeTimers.Remove(timer);
                     StartMission(missionData);
                 }
-
-                timer.StartAsync(delayMs, OnComplete).Forget(); 
             }
         }
 
         private void StartMission(MissionData missionData) 
         {
-            var missionObj = Instantiate(missionData.missionPrefab);
-            missionObj.name = missionData.missionName;
+            var missionObj = Instantiate(missionData.MissionPrefab);
+            missionObj.name = missionData.MissionName;
 
             var mission = missionObj.GetComponent<IMission>();
 
-            mission.OnFinished += OnComponentOnOnFinished;
+            mission.OnFinished += OnMissionFinished;
             
             mission.Begin();
-            return;
-
-            void OnComponentOnOnFinished()
+            
+            void OnMissionFinished()
             {
-                MissionCompleted(missionData);
+                MissionFinished(missionData);
             }
         }
 
-        private void MissionCompleted(MissionData completedMissionData)
+        private void MissionFinished(MissionData finishedMissionData)
         {
-            if (completedMissionData.nextMission != null)
+            if (finishedMissionData.NextMission != null)
             {
-                StartMissionChain(completedMissionData.nextMission);
+                StartMissionChain(finishedMissionData.NextMission);
             }
         }
 
